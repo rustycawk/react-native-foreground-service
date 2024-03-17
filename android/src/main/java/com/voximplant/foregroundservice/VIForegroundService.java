@@ -30,7 +30,11 @@ public class VIForegroundService extends Service {
                         Notification notification = NotificationHelper.getInstance(getApplicationContext())
                                 .buildNotification(getApplicationContext(), notificationConfig);
 
-                        startForeground((int)notificationConfig.getDouble("id"), notification);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            startForeground((int)notificationConfig.getDouble("id"), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+                        }else{
+                            startForeground((int)notificationConfig.getDouble("id"),notification);
+                        }
                     }
                 }
             } else if (action.equals(Constants.ACTION_FOREGROUND_SERVICE_STOP)) {
