@@ -4,6 +4,9 @@
 
 package com.voximplant.foregroundservice;
 
+import static android.content.Context.*;
+
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -69,6 +73,8 @@ public class VIForegroundServiceModule extends ReactContextBaseJavaModule {
         NotificationHelper.getInstance(getReactApplicationContext()).createNotificationChannel(channelConfig, promise);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    @SuppressLint("WrongConstant")
     @ReactMethod
     public void startService(ReadableMap notificationConfig, Promise promise) {
         if (notificationConfig == null) {
@@ -110,8 +116,10 @@ public class VIForegroundServiceModule extends ReactContextBaseJavaModule {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(FOREGROUND_SERVICE_BUTTON_PRESSED);
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getReactApplicationContext().registerReceiver(foregroundReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getReactApplicationContext().registerReceiver(foregroundReceiver,
+                    filter,
+                    Context.RECEIVER_NOT_EXPORTED);
         }else{
             getReactApplicationContext().registerReceiver(foregroundReceiver, filter);
         }
