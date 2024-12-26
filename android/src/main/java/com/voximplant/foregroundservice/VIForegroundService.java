@@ -36,7 +36,7 @@ public class VIForegroundService extends Service {
                                 .buildNotification(getApplicationContext(), notificationConfig);
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            startForeground((int)notificationConfig.getDouble("id"), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+                            startForeground((int)notificationConfig.getDouble("id"), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
                         }else{
                             startForeground((int)notificationConfig.getDouble("id"),notification);
                         }
